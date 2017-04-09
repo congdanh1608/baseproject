@@ -146,15 +146,19 @@ public abstract class BaseFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
     }
 
-    public void delayOnBackPressed(int timeDelay) {
+    public void onBackPressed(int timeDelay) {
         if (timeDelay < 0) timeDelay = 0;
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                getActivity().onBackPressed();
+                onBackPressed();
             }
         }, timeDelay);
+    }
+
+    public void onBackPressed() {
+        getActivity().onBackPressed();
     }
 
     @Override

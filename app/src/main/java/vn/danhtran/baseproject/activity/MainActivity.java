@@ -1,10 +1,11 @@
-package vn.danhtran.baseproject;
+package vn.danhtran.baseproject.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,10 +16,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import vn.danhtran.baseproject.R;
+import vn.danhtran.baseproject.fragment.login.LoginFragment;
+import vn.danhtran.baseproject.fragment.login.authentication.MyAuthenticate;
 
-    public static Intent instance(Activity activity){
+public class MainActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static Intent instance(Activity activity) {
         return new Intent(activity, MainActivity.class);
+    }
+
+    @Override
+    public int setLayout() {
+        return 0;
+    }
+
+    @Override
+    public void initUI() {
+
+    }
+
+    @Override
+    public FragmentManager initFragmentManager() {
+        return getSupportFragmentManager();
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initListener() {
+
     }
 
     @Override
@@ -86,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            addMyFragment(LoginFragment.class.getSimpleName(), null, null);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -102,5 +132,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        MyAuthenticate.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 }

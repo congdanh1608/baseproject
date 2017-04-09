@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import vn.danhtran.sociallogin.MyAccessToken;
-import vn.danhtran.sociallogin.listener.SingleResultListener;
+import vn.danhtran.sociallogin.listener.SocialLoginListener;
 
 /**
  * Created by SilverWolf on 04/04/2017.
@@ -33,17 +33,17 @@ public class FacebookNetwork extends SocialNetwork {
             String userId = loginResult.getAccessToken().getUserId();
 
             myAccessToken = new MyAccessToken.Builder(token).userId(userId).build();
-            singleResultListener.onSuccess(getNetwork());
+            socialLoginListener.onSuccess(FacebookNetwork.this);
         }
 
         @Override
         public void onCancel() {
-            singleResultListener.onFailure(getNetwork(), null);
+            socialLoginListener.onFailure(FacebookNetwork.this, null);
         }
 
         @Override
         public void onError(FacebookException error) {
-            singleResultListener.onFailure(getNetwork(), error);
+            socialLoginListener.onFailure(FacebookNetwork.this, error);
         }
     };
 
@@ -65,8 +65,8 @@ public class FacebookNetwork extends SocialNetwork {
     }
 
     @Override
-    public void requestLogin(SingleResultListener singleResultListener) {
-        setSingleResultListener(singleResultListener);
+    public void requestLogin(SocialLoginListener socialLoginListener) {
+        setSocialLoginListener(socialLoginListener);
         LoginManager.getInstance().logInWithReadPermissions(activity.get(), permissions);
         LoginManager.getInstance().registerCallback(callbackManager, facebookCallback);
     }

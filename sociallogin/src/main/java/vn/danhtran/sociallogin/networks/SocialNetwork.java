@@ -3,7 +3,7 @@ package vn.danhtran.sociallogin.networks;
 import android.content.Intent;
 
 import vn.danhtran.sociallogin.MyAccessToken;
-import vn.danhtran.sociallogin.listener.SingleResultListener;
+import vn.danhtran.sociallogin.listener.SocialLoginListener;
 
 /**
  * Created by SilverWolf on 04/04/2017.
@@ -14,14 +14,14 @@ public abstract class SocialNetwork {
         FACEBOOK, GOOGLE_PLUS
     }
 
-    protected SingleResultListener<Network> singleResultListener;
+    protected SocialLoginListener socialLoginListener;
 
     public abstract boolean isConnected();
 
-    public abstract void requestLogin(SingleResultListener singleResultListener);
+    public abstract void requestLogin(SocialLoginListener socialLoginListener);
 
-    public void setSingleResultListener(SingleResultListener singleResultListener) {
-        this.singleResultListener = singleResultListener;
+    public void setSocialLoginListener(SocialLoginListener socialLoginListener) {
+        this.socialLoginListener = socialLoginListener;
     }
 
     public abstract void logout();

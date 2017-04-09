@@ -16,8 +16,7 @@ import com.blankj.utilcode.util.FragmentUtils;
 
 import java.util.HashMap;
 
-import vn.danhtran.baseproject.LoginFragment;
-import vn.danhtran.baseproject.MainActivity;
+import vn.danhtran.baseproject.fragment.login.LoginFragment;
 import vn.danhtran.baseproject.R;
 
 /**

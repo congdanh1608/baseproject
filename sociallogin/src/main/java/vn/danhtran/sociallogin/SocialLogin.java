@@ -40,7 +40,7 @@ public class SocialLogin {
 
     public SocialNetwork getSocialNetwork(SocialNetwork.Network network) throws RuntimeException {
         if (!networkMap.containsKey(network)) {
-            throw new RuntimeException("Social network " + network + " not found");
+            return null;
         }
         return networkMap.get(network);
     }

@@ -1,32 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="handler"
-            type="vn.danhtran.baseproject.LoginHandler" />
+            type="vn.danhtran.baseproject.fragment.login.LoginHandler" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
-        <Button
-            android:id="@+id/btnLoginGoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Login Google" />
+        <RelativeLayout
+            android:id="@+id/rl01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp">
 
-        <Button
-            android:id="@+id/btnLoginFacebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnLoginGoogle"
-            android:layout_centerHorizontal="true"
-            android:text="Login Facebook" />
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="@{handler.onClickBtnDismiss()}"
+                android:padding="14dp"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <LinearLayout
+                android:id="@+id/lnLoginSocial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/login_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:onClick="@{handler.onClickLoginFacebook()}"
+                    android:text="Facebook"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/login_google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:onClick="@{handler.onClickLoginGoogle()}"
+                    android:text="Google"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:onClick="@{handler.onClickLogout()}"
+                    android:text="Logout"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/progressLayout"
+            layout="@layout/process_layout" />
 
     </RelativeLayout>
-
 </layout>

@@ -24,7 +24,7 @@ import com.google.android.gms.common.api.Scope;
 import java.lang.ref.WeakReference;
 
 import vn.danhtran.sociallogin.MyAccessToken;
-import vn.danhtran.sociallogin.listener.SingleResultListener;
+import vn.danhtran.sociallogin.listener.SocialLoginListener;
 
 /**
  * Created by SilverWolf on 04/04/2017.
@@ -84,8 +84,8 @@ public class GoogleNetwork extends SocialNetwork implements GoogleApiClient.OnCo
     }
 
     @Override
-    public void requestLogin(SingleResultListener singleResultListener) {
-        setSingleResultListener(singleResultListener);
+    public void requestLogin(SocialLoginListener socialLoginListener) {
+        setSocialLoginListener(socialLoginListener);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         activity.get().startActivityForResult(signInIntent, REQUEST_AUTH);
     }
@@ -131,17 +131,17 @@ public class GoogleNetwork extends SocialNetwork implements GoogleApiClient.OnCo
                         .username(acct.getDisplayName())
                         .userId(acct.getId())
                         .build();
-                singleResultListener.onSuccess(getNetwork());
+                socialLoginListener.onSuccess(GoogleNetwork.this);
             }
         } else {
             if (result.getStatus().getStatusCode() == CommonStatusCodes.SIGN_IN_REQUIRED) {
-                if (singleResultListener != null) {
-                    requestLogin(singleResultListener);
+                if (socialLoginListener != null) {
+                    requestLogin(socialLoginListener);
                 }
                 return;
             }
             sharedPreferences.edit().putBoolean(GPLUS_CONNECTED, false).apply();
-            singleResultListener.onFailure(getNetwork(), getStatusCodeString(result.getStatus().getStatusCode()));
+            socialLoginListener.onFailure(GoogleNetwork.this, getStatusCodeString(result.getStatus().getStatusCode()));
         }
     }
 
