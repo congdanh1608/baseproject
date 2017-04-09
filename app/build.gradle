@@ -10,14 +10,12 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        //support vector drawables for android < 21
-        vectorDrawables.useSupportLibrary = true
 
-        //support multi Dex for large library
-        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true                 //support vector drawables for android < 21
 
-        //support render script for android <18
-        renderscriptTargetApi 18
+        multiDexEnabled true                                     //support multi Dex for large library
+
+        renderscriptTargetApi 18                                 //support render script for android <18
         renderscriptSupportModeEnabled true
     }
     buildTypes {
@@ -26,12 +24,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    //support data binding
-    dataBinding {
+
+    dataBinding {                                               //support data binding
         enabled = true
     }
-    //increase build speed
-    dexOptions {
+
+    dexOptions {                                                 //increase build speed
         maxProcessCount 4
         javaMaxHeapSize "2g"
     }
@@ -51,6 +49,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'                         //gson in parse json by gson
     compile project(':utilcode')                                    //Utils code functions
     compile project(':sociallogin')                                 //Social login
+    compile project(':customglide')                                 //Glide
+    compile project(':custom_universal_image_loader')               //Universal image loader
     compile 'com.wang.avi:library:2.1.3'                            //Animation for loading
     compile 'com.orhanobut:logger:1.15'                             //Log pretty
 }

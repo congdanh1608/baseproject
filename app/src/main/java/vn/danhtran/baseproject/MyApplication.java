@@ -22,6 +22,7 @@ import vn.danhtran.baseproject.appmodel.Profile;
 import vn.danhtran.baseproject.appmodel.Session;
 import vn.danhtran.baseproject.enums.SharePref;
 import vn.danhtran.baseproject.sharepreferences.SharePreferences;
+import vn.danhtran.customuniversalimageloader.FactoryImageLoader;
 
 /**
  * Created by danhtran on 1/29/17.
@@ -134,7 +135,7 @@ public class MyApplication extends MultiDexApplication {
     }
 
     private void initFactoryImage() {
-//        FactoryImageLoader.getInstance().initImageLoaderNoBackgroundUniversal(this);
+        FactoryImageLoader.getInstance().initImageLoaderNoBackgroundUniversal(this);
     }
 
     //init fonts for app

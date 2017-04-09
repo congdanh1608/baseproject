@@ -11,6 +11,8 @@ import vn.danhtran.baseproject.R;
 import vn.danhtran.baseproject.databinding.LoginFragmentBinding;
 import vn.danhtran.baseproject.fragment.BaseFragment;
 import vn.danhtran.baseproject.fragment.login.authentication.MyAuthenticate;
+import vn.danhtran.customglide.GlideImageLoader;
+import vn.danhtran.customuniversalimageloader.FactoryImageLoader;
 
 /**
  * Created by SilverWolf on 06/04/2017.
@@ -37,6 +39,10 @@ public class LoginFragment extends BaseFragment {
         loginHandler = new LoginHandler(this);
         loginFragmentBinding.setHandler(loginHandler);
         loginFragmentBinding.executePendingBindings();
+
+        FactoryImageLoader.getInstance().displayImage(
+                "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQbfKHZ2y5dXQlkYRujX8SgTrhj_pGWhRU-QtWbF7USIrRyGMjiMA",
+                loginFragmentBinding.imageView);
     }
 
     @Override
