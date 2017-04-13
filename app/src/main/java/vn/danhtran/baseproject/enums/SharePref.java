@@ -15,13 +15,13 @@ public enum SharePref {
 
     public static final String PREFIX = MyApplication.Instance().getPackageName();
 
-    private final String name;
+    private final String value;
 
-    private SharePref(String s) {
-        name = s;
+    private SharePref(String value) {
+        this.value = value;
     }
 
     public String toString() {
-        return PREFIX + this.name;
+        return PREFIX + this.value;
     }
 }
