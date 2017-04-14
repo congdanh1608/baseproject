@@ -5,24 +5,19 @@ import com.halcyon.logger.HttpLogInterceptor;
 import com.halcyon.logger.ILogger;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vn.danhtran.baseproject.SingleResultListener;
 import vn.danhtran.baseproject.enums.Api;
 import vn.danhtran.baseproject.enums.Method;
 import vn.danhtran.baseproject.enums.Sub;
-import vn.danhtran.baseproject.receiver.ErrorReceiver;
-import vn.danhtran.baseproject.serverAPI.models.ErrorModel;
+import vn.danhtran.baseproject.serverAPI.apiconfig.APIConfig;
+import vn.danhtran.baseproject.serverAPI.apiconfig.APIServer;
+import vn.danhtran.baseproject.serverAPI.errorexception.ErrorHandlingExecutorCallAdapterFactory;
 
 /**
  * Created by SilverWolf on 11/04/2017.
@@ -54,7 +49,7 @@ public class RestClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(APIConfig.domainAPI)
                     .client(client)
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(new ErrorHandlingExecutorCallAdapterFactory(
                             new ErrorHandlingExecutorCallAdapterFactory.MainThreadExecutor()))
@@ -108,92 +103,5 @@ public class RestClient {
 
     public void request(Method method, Api api, JsonElement jsonData, Callback<JsonElement> callback) {
         request(method, api, Sub.NONE, jsonData, callback);
-    }
-
-    //-----------------------
-
-    //use Observable
-    //send error
-    public <T extends ErrorModel> void request(Method method, Api api, Sub sub, JsonElement jsonData,
-                                               SingleResultListener<T> singleResultListener) {
-        request(method, api, sub, jsonData, singleResultListener, true);
-    }
-
-    //is send error?
-    public <T extends ErrorModel> void request(Method method, Api api, Sub sub, JsonElement jsonData,
-                                               SingleResultListener<T> singleResultListener, boolean isSendError) {
-        Observable<T> callShare = request(method, api, sub, jsonData);
-        if (callShare != null)
-            callShare.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(response -> handleResponse(response, singleResultListener, isSendError),
-                            error -> handleError(error, singleResultListener, isSendError));
-    }
-
-    //no sub + send error : true
-    public <T extends ErrorModel> void request(Method method, Api api, JsonElement jsonData,
-                                               SingleResultListener<T> singleResultListener) {
-        request(method, api, Sub.NONE, jsonData, singleResultListener);
-    }
-
-    //no sub + is send error?
-    public <T extends ErrorModel> void request(Method method, Api api, JsonElement jsonData,
-                                               SingleResultListener<T> singleResultListener, boolean isSendError) {
-        request(method, api, Sub.NONE, jsonData, singleResultListener, isSendError);
-    }
-
-    //return Observable -> custom data receive from server
-    public <T extends ErrorModel> Observable<T> request(Method method, Api api, Sub sub, JsonElement jsonData) {
-        Observable<T> callShare = null;
-        switch (method) {
-            case POST:
-                callShare = getHttpClient().post(api.toString(), sub.toString(), jsonData);
-                break;
-            case GET:
-                callShare = getHttpClient().get(api.toString(), sub.toString(), jsonData);
-                break;
-            case DELETE:
-                callShare = getHttpClient().delete(api.toString(), sub.toString(), jsonData);
-                break;
-            case PUT:
-                callShare = getHttpClient().put(api.toString(), sub.toString(), jsonData);
-                break;
-            default:
-                break;
-        }
-        return callShare;
-    }
-
-    //-----------------------
-
-    public <T extends ErrorModel> void handleResponse(T data, SingleResultListener<T> singleResultListener, boolean isSendError) {
-        returnSuccess(data, singleResultListener, isSendError);
-    }
-
-    public void handleError(Throwable error, SingleResultListener singleResultListener, boolean isSendError) {
-        returnFail(error, singleResultListener, isSendError);
-    }
-
-    //check error from server
-    private boolean checkFailServer(ErrorModel errorModel) {
-        return errorModel.getError().getCode() != 0;
-    }
-
-    public <T> void returnFail(Object error, SingleResultListener<T> singleResultListener, boolean isSendError) {
-        singleResultListener.onFailure(error);
-        if (isSendError)
-            ErrorReceiver.instance().broadcastIntent(error);
-    }
-
-    public <T extends ErrorModel> void returnSuccess(T data, SingleResultListener<T> singleResultListener, boolean isSendError) {
-        if (checkFailServer(data)) {
-            singleResultListener.onFailure(data.getError());
-            if (isSendError)
-                ErrorReceiver.instance().broadcastIntent(data.getError());
-        } else {
-            List<T> datas = new ArrayList<>();
-            datas.add(data);
-            singleResultListener.onSuccess(datas);
-        }
     }
 }

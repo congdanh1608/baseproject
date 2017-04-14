@@ -1,4 +1,4 @@
-package vn.danhtran.baseproject.serverAPI;
+package vn.danhtran.baseproject.serverAPI.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import java.io.Serializable;
 
 import vn.danhtran.baseproject.MyApplication;
-import vn.danhtran.baseproject.activity.BaseAppCompatActivity;
 
 /**
  * Created by danhtran on 10/11/2016.
@@ -18,8 +17,7 @@ public class ErrorReceiver extends BroadcastReceiver {
     private static final String KEY_ERROR = "KEY_ERROR";
     public static final String ACTION_POST_FEED_RECEIVER = "vn.asquare.soev.ERROR_RECEIVER";
     private static ErrorReceiver errorReceiver;
-    private BaseAppCompatActivity activity;
-    private Object error;
+    private ErrorReceiverListener errorReceiverListener;
 
     public static ErrorReceiver instance() {
         synchronized (ErrorReceiver.class) {
@@ -29,8 +27,8 @@ public class ErrorReceiver extends BroadcastReceiver {
         }
     }
 
-    public void registerPostFeed(BaseAppCompatActivity activity) {
-        this.activity = activity;
+    public void registerErrorReceiver(ErrorReceiverListener errorReceiverListener) {
+        this.errorReceiverListener = errorReceiverListener;
         MyApplication.Instance().getApplicationContext().registerReceiver(this, new IntentFilter(ACTION_POST_FEED_RECEIVER));      //must register in this to maintain activity + context
     }
 
@@ -40,14 +38,17 @@ public class ErrorReceiver extends BroadcastReceiver {
         bundle.putSerializable(KEY_ERROR, (Serializable) error);
         intent.putExtras(bundle);
         intent.setAction(ACTION_POST_FEED_RECEIVER);
-        activity.sendBroadcast(intent);
+        MyApplication.Instance().getApplicationContext().sendBroadcast(intent);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        error = intent.getSerializableExtra(KEY_ERROR);
-        if (activity != null) {
-//            Util.showMessageErrorAPI(error, activity, activity.rootview);
-        }
+        Object error = intent.getSerializableExtra(KEY_ERROR);
+        if (errorReceiverListener!=null)
+            errorReceiverListener.onFailure(error);
+    }
+
+    public interface ErrorReceiverListener {
+        void onFailure(Object error);
     }
 }

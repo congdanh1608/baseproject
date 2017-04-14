@@ -1,6 +1,4 @@
-package vn.danhtran.baseproject.serverAPI;
-
-import vn.danhtran.baseproject.serverAPI.apiservice.AuthenticateService;
+package vn.danhtran.baseproject.serverAPI.apiservice;
 
 /**
  * Created by danhtran on 14/03/2017.

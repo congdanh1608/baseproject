@@ -16,8 +16,9 @@ import com.blankj.utilcode.util.FragmentUtils;
 
 import java.util.HashMap;
 
-import vn.danhtran.baseproject.fragment.login.LoginFragment;
 import vn.danhtran.baseproject.R;
+import vn.danhtran.baseproject.fragment.login.LoginFragment;
+import vn.danhtran.baseproject.receiver.ErrorReceiver;
 
 /**
  * Created by CongDanh on 07/06/2016.
@@ -99,8 +100,14 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver();
     }
 
+    private void registerReceiver() {
+        ErrorReceiver.instance().registerErrorReceiver(error -> {
+            //Log
+        });
+    }
 
     @Override
     protected void onPause() {

@@ -1,1 +1,1 @@
-include ':app', ':sociallogin', ':customglide', ':custom_universal_image_loader', 'utilcode'
+include ':app', ':sociallogin', ':custom_glide', ':custom_universal_image_loader', 'utilcode'

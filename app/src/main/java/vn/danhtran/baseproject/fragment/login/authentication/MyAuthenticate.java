@@ -1,7 +1,6 @@
 package vn.danhtran.baseproject.fragment.login.authentication;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 import vn.danhtran.baseproject.SingleResultListener;
+import vn.danhtran.baseproject.serverAPI.apiservice.APIManager;
+import vn.danhtran.baseproject.serverAPI.models.LoginModel;
 import vn.danhtran.sociallogin.MyAccessToken;
 import vn.danhtran.sociallogin.SocialLogin;
 import vn.danhtran.sociallogin.listener.SocialLoginListener;
@@ -66,7 +67,18 @@ public class MyAuthenticate implements GoogleApiClient.ConnectionCallbacks, Goog
                 loginWithFacebook(activity);
                 break;
             case TYPE_LOGIN_GOOGLE:
-                loginWithGoogle(activity);
+//                loginWithGoogle(activity);
+                APIManager.instance().authen().authenticate2(new SingleResultListener<LoginModel>() {
+                    @Override
+                    public void onSuccess(List<LoginModel> data) {
+                        Logger.d("Success");
+                    }
+
+                    @Override
+                    public void onFailure(Object error) {
+                        Logger.d("Failure");
+                    }
+                });
                 break;
         }
     }

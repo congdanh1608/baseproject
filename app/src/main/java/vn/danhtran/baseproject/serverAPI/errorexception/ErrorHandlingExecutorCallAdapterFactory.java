@@ -1,4 +1,4 @@
-package vn.danhtran.baseproject.serverAPI;
+package vn.danhtran.baseproject.serverAPI.errorexception;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -31,20 +31,20 @@ public class ErrorHandlingExecutorCallAdapterFactory extends CallAdapter.Factory
     }
 
     @Override
-    public CallAdapter<?> get(final Type poType, final Annotation[] paoAnnotations, final Retrofit poRetrofit) {
+    public CallAdapter<?, ?> get(final Type poType, final Annotation[] paoAnnotations, final Retrofit poRetrofit) {
         if (getRawType(poType) != Call.class) {
             return null;
         }
         final Type loResponseType = getCallResponseType(poType);
-        return new CallAdapter<Call<?>>() {
+        return new CallAdapter<Object, Object>() {
             @Override
             public Type responseType() {
                 return loResponseType;
             }
 
             @Override
-            public <R> Call<R> adapt(final Call<R> poCall) {
-                return new ExecutorCallbackCall<>(mCallbackExecutor, poCall, poRetrofit);
+            public Object adapt(Call<Object> call) {
+                return new ExecutorCallbackCall<>(mCallbackExecutor, call, poRetrofit);
             }
         };
     }

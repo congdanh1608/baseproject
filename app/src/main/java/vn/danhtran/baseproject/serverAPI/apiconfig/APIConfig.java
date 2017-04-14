@@ -1,4 +1,4 @@
-package vn.danhtran.baseproject.serverAPI;
+package vn.danhtran.baseproject.serverAPI.apiconfig;
 
 /**
  * Created by tamhuynh on 1/31/16.

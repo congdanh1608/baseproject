@@ -1,4 +1,4 @@
-package vn.danhtran.baseproject.serverAPI;
+package vn.danhtran.baseproject.serverAPI.apiconfig;
 
 import com.google.gson.JsonElement;
 
@@ -11,7 +11,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import vn.danhtran.baseproject.serverAPI.models.ErrorModel;
+import vn.danhtran.baseproject.serverAPI.models.LoginModel;
 
 /**
  * Created by SilverWolf on 11/04/2017.
@@ -37,21 +37,21 @@ public interface APIServer {
     @PUT("{api}")
     Call<JsonElement> putRequest(@Path("api") String api, @Body JsonElement jsonData);
 
-    //-----------------Observable<>
 
+    //-----------------Observable<>
     @Headers(header)
     @POST("{api}/{sub}")
-    <T extends ErrorModel> Observable<T> post(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
+    Observable<LoginModel> post(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
 
     @Headers(header)
     @GET("{api}")
-    <T extends ErrorModel> Observable<T> get(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
+    Observable<LoginModel> get(@Path("api") String api, @Path("sub") String sub);
 
     @Headers(header)
     @DELETE("{api}")
-    <T extends ErrorModel> Observable<T> delete(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
+    Observable<LoginModel> delete(@Path("api") String api, @Path("sub") String sub);
 
     @Headers(header)
     @PUT("{api}")
-    <T extends ErrorModel> Observable<T> put(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
+    Observable<LoginModel> put(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
 }

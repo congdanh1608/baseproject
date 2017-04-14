@@ -1,4 +1,4 @@
-package vn.danhtran.baseproject.serverAPI;
+package vn.danhtran.baseproject.serverAPI.errorexception;
 
 
 import android.support.annotation.NonNull;
