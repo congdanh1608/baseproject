@@ -105,7 +105,7 @@ public class LoginHandler {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment.showProgressbar();
+//                fragment.showProgressbar();
                 typeLogin = MyAuthenticate.TYPE_LOGIN_GOOGLE;
                 MyAuthenticate.getInstance().loginWith(MyAuthenticate.TYPE_LOGIN_GOOGLE, fragment.getActivity(), new SingleResultListener<String>() {
                     @Override

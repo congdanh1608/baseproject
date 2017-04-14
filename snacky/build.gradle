@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.matecode'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -12,6 +15,7 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
     buildTypes {
         release {
@@ -22,13 +26,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+    compile "com.android.support:design:$rootProject.ext.supportLibVersion"
     testCompile 'junit:junit:4.12'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile "com.android.support:support-v4:$rootProject.ext.supportLibVersion"
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
 }
