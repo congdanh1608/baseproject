@@ -21,7 +21,8 @@ import vn.danhtran.baseproject.MyApplication;
  */
 public class DeprecatedUtil {
 
-    public static int getResourceColor(int resource, Context context) {
+    public static int getResourceColor(int resource) {
+        Context context = MyApplication.Instance().getApplicationContext();
         if (MyApplication.Instance().getVersionOS() >= Build.VERSION_CODES.LOLLIPOP) {
             return ContextCompat.getColor(context, resource);
         } else {

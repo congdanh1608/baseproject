@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.mateware.snacky.Snacky;
 import vn.danhtran.baseproject.R;
 import vn.danhtran.baseproject.SingleResultListener;
 import vn.danhtran.baseproject.serverAPI.apiservice.APIManager;
@@ -73,7 +76,6 @@ public class MyAuthenticate implements GoogleApiClient.ConnectionCallbacks, Goog
                 break;
             case TYPE_LOGIN_GOOGLE:
 //                loginWithGoogle(activity);
-
                 break;
         }
     }
