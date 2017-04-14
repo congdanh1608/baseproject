@@ -18,10 +18,16 @@ android {
         renderscriptTargetApi 18                                 //support render script for android <18
         renderscriptSupportModeEnabled true
 
-        jackOptions {
+        jackOptions {                                            //enable jack to build on java 8
             enabled true
         }
     }
+
+    compileOptions {                                             //build on java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,21 +43,17 @@ android {
         maxProcessCount 4
         javaMaxHeapSize "2g"
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 ext {
-    supportLibVersion = "25.3.0"
+    supportLibVersion = "25.3.1"
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile 'com.android.support:design:25.3.0'
+    compile "com.android.support:design:$supportLibVersion"
     compile 'com.android.support:multidex:1.0.1'                    //multidex
     compile 'org.glassfish:javax.annotation:10.0-b28'               //annotation in parse json model
     compile 'com.google.code.gson:gson:2.7'                         //gson in parse json by gson
@@ -67,4 +69,9 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.lhalcyon:okhttp-logger-interceptor:1.0.2'          //Log interceptor for Retrofit
+//    compile 'com.github.matecode:Snacky:1.0.2'                      //Snackbar
+    compile 'com.afollestad.material-dialogs:core:0.9.4.3'          //Dialog material
+    compile ('io.nlopez.smartlocation:library:3.3.1') {             //smart get location
+        transitive = false
+    }
 }

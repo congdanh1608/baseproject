@@ -13,12 +13,16 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.FragmentUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 
+import vn.danhtran.baseproject.BuildConfig;
 import vn.danhtran.baseproject.R;
+import vn.danhtran.baseproject.enums.RequestCode;
 import vn.danhtran.baseproject.fragment.login.LoginFragment;
 import vn.danhtran.baseproject.receiver.ErrorReceiver;
+import vn.danhtran.baseproject.receiver.LocationReceiver;
 
 /**
  * Created by CongDanh on 07/06/2016.
@@ -234,14 +238,34 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             progressBar.setVisibility(View.GONE);
     }
 
+    private void continueCurrentAction() {
+        String current = getCurrentNameFragment();
+        if (BuildConfig.DEBUG) Logger.d("Continue " + current);
+        if (mFragmentManager != null && current != null) {
+            Fragment fragment = mFragmentManager.findFragmentByTag(current);
+            if (fragment != null) {
+
+            }
+        }
+    }
+
+    public String getCurrentNameFragment() {
+        int count = mFragmentManager.getBackStackEntryCount();
+        return mFragmentManager.getBackStackEntryAt(count - 1).getName();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case MyConstants.MY_PERMISSIONS_REQUEST_GPS:
-//                getLocation();
-//                break;
-//        }
+        RequestCode code = RequestCode.fromValue(requestCode);
+        if (code != null)
+            switch (code) {
+                case MY_PERMISSIONS_REQUEST_LOCATION:
+                    LocationReceiver.instance().requestLocation(this, success -> {
+                        continueCurrentAction();
+                    });
+                    break;
+            }
     }
 
     @Override
