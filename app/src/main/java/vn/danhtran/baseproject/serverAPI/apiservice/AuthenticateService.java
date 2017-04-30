@@ -95,4 +95,92 @@ public class AuthenticateService extends BaseService {
                     }
                 });
     }
+
+    public void signup(SingleResultListener<LoginModel> singleResultListener) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("email", "accfortest1993@gmail.com");
+        params.put("password", "123456");
+        params.put("fullName", "soibat");
+        params.put("age", 24);
+        params.put("gender", 1);
+        params.put("interestedInGender", 2);
+        RestClient.instance().request(Method.POST, Api.SIGNUP, Sub.NONE, JsonParser.fromJsonElement(params),
+                new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        JsonElement body = response.body();
+                        if (body != null && body.isJsonObject()) {
+                            String json = body.getAsJsonObject().toString();
+                            try {
+                                LoginModel loginModel = JsonParser.fromJson(json, LoginModel.class);
+                                returnSuccess(loginModel, singleResultListener);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+                        returnFail(t, singleResultListener);
+                    }
+                });
+    }
+
+    public void login(SingleResultListener<LoginModel> singleResultListener) {
+        Map<String, Object> params = new HashMap<>();
+//        params.put("email", "character1@animeloversapp.com");
+//        params.put("password", "123456");
+        params.put("email", "character2@animeloversapp.com");
+        params.put("password", "123456");
+//        params.put("email", "accfortest1993@gmail.com");
+//        params.put("password", "123456");
+        RestClient.instance().request(Method.POST, Api.LOGIN, Sub.NONE, JsonParser.fromJsonElement(params),
+                new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        JsonElement body = response.body();
+                        if (body != null && body.isJsonObject()) {
+                            String json = body.getAsJsonObject().toString();
+                            try {
+                                LoginModel loginModel = JsonParser.fromJson(json, LoginModel.class);
+                                returnSuccess(loginModel, singleResultListener);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+                        returnFail(t, singleResultListener);
+                    }
+                });
+    }
+
+    public void addNotify(SingleResultListener<LoginModel> singleResultListener) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("playerId", "6d7a578f-f8d6-4272-b3fa-23747661c553");
+        RestClient.instance().request(Method.POST_SUB, Api.CHARACTER, Sub.DEVICES, JsonParser.fromJsonElement(params),
+                new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        JsonElement body = response.body();
+                        if (body != null && body.isJsonObject()) {
+                            String json = body.getAsJsonObject().toString();
+                            try {
+                                LoginModel loginModel = JsonParser.fromJson(json, LoginModel.class);
+                                returnSuccess(loginModel, singleResultListener);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+                        returnFail(t, singleResultListener);
+                    }
+                });
+    }
 }

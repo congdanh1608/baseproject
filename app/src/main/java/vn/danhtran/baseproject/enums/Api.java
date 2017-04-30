@@ -5,7 +5,10 @@ package vn.danhtran.baseproject.enums;
  */
 
 public enum Api {
-    LOGIN("login"),
+    LOGIN("signin"),
+    SIGNUP("signup"),
+    AUTHEN("auth"),
+    CHARACTER("character"),
     EVENTS("events");
 
     private final String value;

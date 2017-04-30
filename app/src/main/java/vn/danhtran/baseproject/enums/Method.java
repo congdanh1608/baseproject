@@ -6,6 +6,7 @@ package vn.danhtran.baseproject.enums;
 
 public enum Method {
     POST,
+    POST_SUB,
     GET,
     DELETE,
     PUT;

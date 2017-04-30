@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import vn.danhtran.baseproject.BuildConfig;
 import vn.danhtran.baseproject.R;
+import vn.danhtran.baseproject.activity.main.MainActivity;
 import vn.danhtran.baseproject.enums.RequestCode;
 import vn.danhtran.baseproject.fragment.login.LoginFragment;
 import vn.danhtran.baseproject.receiver.ErrorReceiver;
@@ -32,7 +33,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     private View progressBar;
     protected static boolean isAlive = false;
     protected HashMap<String, String> hashTitles;
-    private FragmentManager mFragmentManager;
+    protected FragmentManager mFragmentManager;
     private String curFragment = "";
 
     public abstract int setLayout();
