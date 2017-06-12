@@ -22,6 +22,7 @@ import vn.danhtran.baseproject.R;
 import vn.danhtran.baseproject.activity.main.MainActivity;
 import vn.danhtran.baseproject.enums.RequestCode;
 import vn.danhtran.baseproject.fragment.login.LoginFragment;
+import vn.danhtran.baseproject.fragment.recyclerviewtest.RecyclerFragment;
 import vn.danhtran.baseproject.receiver.ErrorReceiver;
 import vn.danhtran.baseproject.receiver.LocationReceiver;
 
@@ -109,9 +110,15 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     }
 
     private void registerReceiver() {
-        ErrorReceiver.instance().registerErrorReceiver(error -> {
-            //Log
+        ErrorReceiver.instance().registerErrorReceiver(new ErrorReceiver.ErrorReceiverListener() {
+            @Override
+            public void onFailure(Object error) {
+                //Log
+            }
         });
+//        ErrorReceiver.instance().registerErrorReceiver(error -> {
+//            //Log
+//        });
     }
 
     @Override
@@ -194,7 +201,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             //add new fragment
             if (tag.equals(LoginFragment.class.getSimpleName())) {
                 fragMain = LoginFragment.instance();
+            } else if (tag.equals(RecyclerFragment.class.getSimpleName())) {
+                fragMain = RecyclerFragment.instance();
             }
+
 
             if (fragMain != null) {
                 changeTitle(tag, title);
@@ -262,8 +272,14 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         if (code != null)
             switch (code) {
                 case MY_PERMISSIONS_REQUEST_LOCATION:
-                    LocationReceiver.instance().requestLocation(this, success -> {
-                        continueCurrentAction();
+//                    LocationReceiver.instance().requestLocation(this, success -> {
+//                        continueCurrentAction();
+//                    });
+                    LocationReceiver.instance().requestLocation(this, new LocationReceiver.LocationReceiverListener() {
+                        @Override
+                        public void locationChanged(boolean success) {
+                            continueCurrentAction();
+                        }
                     });
                     break;
             }

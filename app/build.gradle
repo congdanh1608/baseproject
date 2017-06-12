@@ -18,15 +18,15 @@ android {
         renderscriptTargetApi 18                                 //support render script for android <18
         renderscriptSupportModeEnabled true
 
-        jackOptions {                                            //enable jack to build on java 8
-            enabled true
-        }
+//        jackOptions {                                            //enable jack to build on java 8
+//            enabled true
+//        }
     }
 
-    compileOptions {                                             //build on java 8
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+//    compileOptions {                                             //build on java 8
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
 
     buildTypes {
         release {

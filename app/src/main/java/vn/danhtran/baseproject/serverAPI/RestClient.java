@@ -48,11 +48,20 @@ public class RestClient {
                 .addInterceptor(getInterceptor())
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(chain -> {
-                    Request newRequest  = chain.request().newBuilder()
-                            .addHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1OGY0MTUwOGI3ZWZhNzUwMTFhMDA4YWMiLCJ1c2VyRW1haWwiOiJjaGFyYWN0ZXIyQGFuaW1lbG92ZXJzYXBwLmNvbSIsInVzZXJDcmVhdGVkRGF0ZSI6IjIwMTctMDQtMTdUMDE6MDY6MTYuMDQ3WiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE0OTI0MTU2MzEsImV4cCI6MTQ5NzU5OTYzMX0.BkDMHojXxBZjziDaxb72RrayFR3ZYctaKn51fn6WhHE")
-                            .build();
-                    return chain.proceed(newRequest);
+//                .addInterceptor(chain -> {
+//                    Request newRequest  = chain.request().newBuilder()
+//                            .addHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1OGY0MTUwOGI3ZWZhNzUwMTFhMDA4YWMiLCJ1c2VyRW1haWwiOiJjaGFyYWN0ZXIyQGFuaW1lbG92ZXJzYXBwLmNvbSIsInVzZXJDcmVhdGVkRGF0ZSI6IjIwMTctMDQtMTdUMDE6MDY6MTYuMDQ3WiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE0OTI0MTU2MzEsImV4cCI6MTQ5NzU5OTYzMX0.BkDMHojXxBZjziDaxb72RrayFR3ZYctaKn51fn6WhHE")
+//                            .build();
+//                    return chain.proceed(newRequest);
+//                })
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request newRequest = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1OGY0MTUwOGI3ZWZhNzUwMTFhMDA4YWMiLCJ1c2VyRW1haWwiOiJjaGFyYWN0ZXIyQGFuaW1lbG92ZXJzYXBwLmNvbSIsInVzZXJDcmVhdGVkRGF0ZSI6IjIwMTctMDQtMTdUMDE6MDY6MTYuMDQ3WiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE0OTI0MTU2MzEsImV4cCI6MTQ5NzU5OTYzMX0.BkDMHojXxBZjziDaxb72RrayFR3ZYctaKn51fn6WhHE")
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
                 })
                 .build();
         if (retrofit == null) {

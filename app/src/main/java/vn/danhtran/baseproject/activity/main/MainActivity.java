@@ -20,6 +20,7 @@ import vn.danhtran.baseproject.databinding.ActivityMainBinding;
 import vn.danhtran.baseproject.databinding.NavHeaderMainBinding;
 import vn.danhtran.baseproject.fragment.login.LoginFragment;
 import vn.danhtran.baseproject.fragment.login.authentication.MyAuthenticate;
+import vn.danhtran.baseproject.fragment.recyclerviewtest.RecyclerFragment;
 
 public class MainActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,7 +56,8 @@ public class MainActivity extends BaseAppCompatActivity implements NavigationVie
             if (hashTag != null)
                 postId = hashTag.getValue();
         }*/
-        addMyFragment(LoginFragment.class.getSimpleName(), null, null);
+//        addMyFragment(LoginFragment.class.getSimpleName(), null, null);
+        addMyFragment(RecyclerFragment.class.getSimpleName(), null, null);
 
        /* if (MyApplication.Instance().getTypeLogin() != MyAuthenticate.TYPE_LOGIN_ANONYMOUS &&
                 TextUtils.isEmpty(MyApplication.Instance().getMyProfile().getPhone())) {
