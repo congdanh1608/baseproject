@@ -26,8 +26,9 @@
                 android:layout_height="match_parent"
                 android:background="@color/color_white"
                 android:setAdapter="@{handler.setAdapter}"
-                bind:dividerItem="@{1}"
-                bind:linearManager="@{1}" />
+                bind:dividerItemLinear="@{1}"
+                bind:linearManager="@{1}"
+                bind:sizeSpace="@{2}" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </layout>

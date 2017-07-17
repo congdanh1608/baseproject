@@ -22,9 +22,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Bindin
     protected List<T> items;
     protected BaseRecyclerListener listener;
     protected final LayoutInflater mLayoutInflater;
+    protected Context context;
 
 
     public BaseRecyclerAdapter(Context context, BaseRecyclerListener listener) {
+        this.context = context;
         this.listener = listener;
         mLayoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

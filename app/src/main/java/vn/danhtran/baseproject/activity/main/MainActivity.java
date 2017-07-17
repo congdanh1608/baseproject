@@ -67,12 +67,7 @@ public class MainActivity extends BaseAppCompatActivity implements NavigationVie
             startMyActivity(EditProfileActivity.class.getSimpleName(), bundle);
         }*/
     }
-
-    @Override
-    public FragmentManager initFragmentManager() {
-        return getSupportFragmentManager();
-    }
-
+    
     @Override
     public void initData() {
 

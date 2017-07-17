@@ -22,6 +22,7 @@ import java.io.File;
 import vn.danhtran.customglide.customsize.CustomImageSizeModel;
 import vn.danhtran.customglide.customsize.CustomImageSizeModelFutureStudio;
 import vn.danhtran.customglide.customsize.CustomImageSizeUrlLoader;
+import vn.danhtran.customglide.rounder.RoundedBitmapDrawableFormat;
 import vn.danhtran.customglide.rounder.RoundedCornersTransformation;
 
 /**
@@ -100,7 +101,7 @@ public class GlideImageLoader implements GlideModule {
         Glide.with(context).load(url)
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.place_holder)
-                .crossFade()
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
@@ -111,7 +112,7 @@ public class GlideImageLoader implements GlideModule {
                 .load(url)
                 .placeholder(R.drawable.place_holder)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade()
+                .centerCrop()
                 .override(width, height)
                 .into(imageView);
     }
@@ -164,6 +165,25 @@ public class GlideImageLoader implements GlideModule {
                                 RoundedBitmapDrawableFactory.create(context.getResources(), resource);
                         circularBitmapDrawable.setCircular(true);
                         imageView.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+
+    }
+
+    public void displayImageCircle(String url, final ImageView imageView, int width, int height, final int borderSize) {
+        final Context context = imageView.getContext();
+        Glide.with(context)
+                .load(url)
+                .asBitmap()
+                .override(width, height)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(new BitmapImageViewTarget(imageView) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawableFormat format =
+                                new RoundedBitmapDrawableFormat(context.getResources(), borderSize);
+                        imageView.setImageDrawable(format.createRoundedBitmapDrawableWithBorder(resource));
                     }
                 });
 
