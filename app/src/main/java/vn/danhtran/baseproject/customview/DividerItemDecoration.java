@@ -2,7 +2,6 @@ package vn.danhtran.baseproject.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +14,7 @@ import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private static int SIZE = 1;
+    private int sizeSpace = 1;
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
@@ -27,7 +27,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
 
-    public DividerItemDecoration(Context context, int orientation) {
+    public DividerItemDecoration(Context context, int orientation, int sizeSpace) {
+        this.sizeSpace = sizeSpace;
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
@@ -41,7 +42,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mOrientation = orientation;
     }
 
-    @Override
+   /* @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent);
@@ -80,16 +81,37 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
-    }
+    }*/
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-            if (mOrientation == VERTICAL_LIST) {
-                outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
-            } else {
-                outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
-            }
+//        if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
+        if (mOrientation == VERTICAL_LIST) {
+            setVertical(outRect, parent, view);
+//                outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+
+        } else {
+            setHorizontal(outRect, parent, view);
+//                outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+        }
+    }
+//    }
+
+    private void setVertical(Rect outRect, RecyclerView parent, View view) {
+        int pos = parent.getChildLayoutPosition(view);
+        if (pos == parent.getAdapter().getItemCount() - 1) {
+            outRect.set(0, 0, 0, 0);
+        } else {
+            outRect.set(0, 0, 0, sizeSpace);
+        }
+    }
+
+    private void setHorizontal(Rect outRect, RecyclerView parent, View view) {
+        int pos = parent.getChildLayoutPosition(view);
+        if (pos == parent.getAdapter().getItemCount() - 1) {
+            outRect.set(0, 0, 0, 0);
+        } else {
+            outRect.set(0, 0, sizeSpace, 0);
         }
     }
 }

@@ -72,10 +72,32 @@ public class MyAuthenticate implements GoogleApiClient.ConnectionCallbacks, Goog
         initData(singleResultListener);
         switch (typeLogin) {
             case TYPE_LOGIN_FACEBOOK:
-                loginWithFacebook(activity);
+//                loginWithFacebook(activity);
+                APIManager.instance().authen().login(new SingleResultListener<LoginModel>() {
+                    @Override
+                    public void onSuccess(List<LoginModel> data) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Object error) {
+
+                    }
+                });
                 break;
             case TYPE_LOGIN_GOOGLE:
 //                loginWithGoogle(activity);
+                APIManager.instance().authen().addNotify(new SingleResultListener<LoginModel>() {
+                    @Override
+                    public void onSuccess(List<LoginModel> data) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Object error) {
+
+                    }
+                });
                 break;
         }
     }

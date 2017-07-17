@@ -9,9 +9,11 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
@@ -93,21 +95,36 @@ public class LocationReceiver extends BroadcastReceiver implements OnLocationUpd
 
     public void showSettingsAlert() {
         MyApplication.Instance().setUseLocation(false);
-        Context context = MyApplication.Instance().getApplicationContext();
+        final Context context = MyApplication.Instance().getApplicationContext();
 
         new MaterialDialog.Builder(context)
                 .title("title")
                 .content("Content")
                 .positiveText("Agree")
                 .icon(DeprecatedUtil.getDrawableVector(R.drawable.ic_alert, R.mipmap.ic_alert))
-                .onNegative((dialog, which) -> {
-                    dialog.cancel();
-                    listener.locationChanged(false);
+//                .onNegative((dialog, which) -> {
+//                    dialog.cancel();
+//                    listener.locationChanged(false);
+//                })
+//                .onPositive((dialog, which) -> {
+//                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                    context.startActivity(intent);
+//                    listener.locationChanged(false);
+//                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                        listener.locationChanged(false);
+                    }
                 })
-                .onPositive((dialog, which) -> {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    context.startActivity(intent);
-                    listener.locationChanged(false);
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        context.startActivity(intent);
+                        listener.locationChanged(false);
+                    }
                 })
                 .show();
     }

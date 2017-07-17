@@ -4,6 +4,7 @@ package vn.danhtran.baseproject.binding;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -51,6 +52,14 @@ public class CustomBinding {
         imageView.setLayoutParams(layoutParams);
     }
 
+    //no size
+    @BindingAdapter({"bind:setImage"})
+    public static void setImage(ImageView imageView, String url) {
+        if (url != null) {
+            GlideImageLoader.getInstance().displayImage(url, imageView);
+        }
+    }
+
     //size in dp
     @BindingAdapter({"bind:setImage", "bind:width", "bind:height"})
     public static void setImage(ImageView imageView, String url, int width, int height) {
@@ -71,6 +80,19 @@ public class CustomBinding {
         if (url != null) {
             if (isCircle)
                 GlideImageLoader.getInstance().displayImageCircle(url, imageView, width, height);
+            else GlideImageLoader.getInstance().displayImage(url, imageView, width, height);
+        }
+    }
+
+    //size in dp
+    @BindingAdapter({"bind:setImage", "bind:width", "bind:height", "bind:isCircle", "bind:borderSize"})
+    public static void setImage(ImageView imageView, String url, int width, int height, boolean isCircle, int borderSize) {
+        //set default value
+        width = DimensionUtils.dpToPx(width);
+        height = DimensionUtils.dpToPx(height);
+        if (url != null) {
+            if (isCircle)
+                GlideImageLoader.getInstance().displayImageCircle(url, imageView, width, height, borderSize);
             else GlideImageLoader.getInstance().displayImage(url, imageView, width, height);
         }
     }
@@ -109,7 +131,7 @@ public class CustomBinding {
                     }
                 });
                 break;
-            case 3:     //2 - no scroll horizontal
+            case 3:     //3 - no scroll horizontal
                 recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()) {
                     @Override
                     public boolean canScrollHorizontally() {
@@ -122,19 +144,35 @@ public class CustomBinding {
         }
     }
 
-    @BindingAdapter("bind:dividerItem")
-    public static void dividerItemDecoration(RecyclerView recyclerView, int _int) {
-        Context context = recyclerView.getContext();
+    @BindingAdapter({"bind:gridManager", "bind:rows"})
+    public static void gridManager(RecyclerView recyclerView, int _int, int spanCount) {
         switch (_int) {
-            case 0:
-                recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL));
-                break;
-            case 1:
-                recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+            case 0:     //0 - grid layout
+                recyclerView.setLayoutManager(new GridLayoutManager(recyclerView.getContext(), spanCount));
                 break;
             default:
                 break;
         }
+    }
+
+    @BindingAdapter({"bind:dividerItemLinear", "bind:sizeSpace"})
+    public static void dividerItemDecorationLinear(RecyclerView recyclerView, int type, int size) {
+        Context context = recyclerView.getContext();
+        switch (type) {
+            case 0:
+                recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL, size));
+                break;
+            case 1:
+                recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL, size));
+                break;
+            default:
+                break;
+        }
+    }
+
+    @BindingAdapter({"bind:dividerItemGrid", "bind:sizeSpace"})
+    public static void dividerItemDecorationGrid(RecyclerView recyclerView, int column, int size) {
+        recyclerView.addItemDecoration(new SpacesItemDecoration(size, column));
     }
 
     @BindingAdapter("bind:hideKeyboadLostFocus")

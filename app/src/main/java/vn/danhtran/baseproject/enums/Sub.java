@@ -6,6 +6,8 @@ package vn.danhtran.baseproject.enums;
 
 public enum Sub {
     NONE(""),
+    DEVICES("devices"),
+    AUTHENETICATE_MAIL("authenticateEmail"),
     JOIN_EVENT_DAY("checkin");
 
     private final String value;

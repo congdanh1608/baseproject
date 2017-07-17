@@ -9,18 +9,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import vn.danhtran.baseproject.BuildConfig;
 import vn.danhtran.baseproject.R;
+import vn.danhtran.baseproject.activity.main.MainActivity;
 import vn.danhtran.baseproject.enums.RequestCode;
 import vn.danhtran.baseproject.fragment.login.LoginFragment;
+import vn.danhtran.baseproject.fragment.recyclerviewtest.RecyclerFragment;
 import vn.danhtran.baseproject.receiver.ErrorReceiver;
 import vn.danhtran.baseproject.receiver.LocationReceiver;
 
@@ -32,14 +40,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     private View progressBar;
     protected static boolean isAlive = false;
     protected HashMap<String, String> hashTitles;
-    private FragmentManager mFragmentManager;
+    protected FragmentManager mFragmentManager;
     private String curFragment = "";
+    protected TextView tvTitle;
 
     public abstract int setLayout();
 
     public abstract void initUI();          //set handler + excute
-
-    public abstract FragmentManager initFragmentManager();
 
     public abstract void initData();
 
@@ -69,9 +76,14 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
         createHashMapTitle();
         initUI();
-        mFragmentManager = initFragmentManager();
+        initFragmentManager();
         initListener();
         initData();
+    }
+
+    private void initFragmentManager() {
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.addOnBackStackChangedListener(this);
     }
 
     @Override
@@ -108,9 +120,15 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     }
 
     private void registerReceiver() {
-        ErrorReceiver.instance().registerErrorReceiver(error -> {
-            //Log
+        ErrorReceiver.instance().registerErrorReceiver(new ErrorReceiver.ErrorReceiverListener() {
+            @Override
+            public void onFailure(Object error) {
+                //Log
+            }
         });
+//        ErrorReceiver.instance().registerErrorReceiver(error -> {
+//            //Log
+//        });
     }
 
     @Override
@@ -184,7 +202,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     public void addMyFragment(String tag, Object data, String title) {
         Fragment fragMain = mFragmentManager.findFragmentByTag(tag);
-        if (curFragment != null && !tag.equals(curFragment)) {
+        boolean isPass = !tag.equals(curFragment);
+        //except fragment movie + tvshow -> b/c i can open that fragment in similar.
+        if (curFragment != null && isExceptFragment(tag)) {
+            fragMain = null;
+            isPass = true;
+        }
+        if (isPass) {
             //check in backstack -> get fragment from backstack
             if (fragMain != null) {
                 mFragmentManager.popBackStack(tag, 0);
@@ -193,7 +217,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             //add new fragment
             if (tag.equals(LoginFragment.class.getSimpleName())) {
                 fragMain = LoginFragment.instance();
+            } else if (tag.equals(RecyclerFragment.class.getSimpleName())) {
+                fragMain = RecyclerFragment.instance();
             }
+
 
             if (fragMain != null) {
                 changeTitle(tag, title);
@@ -202,11 +229,28 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         }
     }
 
-    private void changeTitle(String tag, String title) {
+    private boolean isExceptFragment(String tag) {
+        List<String> listExcept = new ArrayList<>();
+        return listExcept.contains(tag);
+    }
+
+    public void changeTitle(String tag, String title) {
         if (TextUtils.isEmpty(title)) {
             title = hashTitles.get(tag);
         }
-        setTitle(title);
+        if (tvTitle != null)
+            tvTitle.setText(title);
+        else if (title != null)
+            setTitle(title);
+        else changeTitleBackToMain(tag);
+    }
+
+    private void changeTitleBackToMain(String tag) {
+        /*if (MainFragment.class.getName().equals(tag)) {
+            String nameCurrentChildFragment = getCurrentNameChildFragment();
+            if (!TextUtils.isEmpty(nameCurrentChildFragment))
+                changeTitle(nameCurrentChildFragment, "");
+        }*/
     }
 
     private void createHashMapTitle() {
@@ -249,9 +293,46 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         }
     }
 
+    public String getPreviousNameFragment() {
+        int count = mFragmentManager.getBackStackEntryCount();
+        if (count > 1)
+            return mFragmentManager.getBackStackEntryAt(count - 2).getName();
+        return null;
+    }
+
     public String getCurrentNameFragment() {
         int count = mFragmentManager.getBackStackEntryCount();
-        return mFragmentManager.getBackStackEntryAt(count - 1).getName();
+        if (count > 0)
+            return mFragmentManager.getBackStackEntryAt(count - 1).getName();
+        return null;
+    }
+
+    public Fragment getCurrentFragment() {
+        if (mFragmentManager != null) {
+            String currentNameFragment = getCurrentNameFragment();
+            if (!TextUtils.isEmpty(currentNameFragment))
+                return mFragmentManager.findFragmentByTag(currentNameFragment);
+        }
+        return null;
+    }
+
+    public FragmentManager getChildManager() {
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment != null) {
+            return currentFragment.getChildFragmentManager();
+        }
+        return null;
+    }
+
+    public String getCurrentNameChildFragment() {
+        FragmentManager childManager = getChildManager();
+        if (childManager != null) {
+            int count = childManager.getBackStackEntryCount();
+            if (count > 0) {
+                return childManager.getBackStackEntryAt(count - 1).getName();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -261,11 +342,29 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         if (code != null)
             switch (code) {
                 case MY_PERMISSIONS_REQUEST_LOCATION:
-                    LocationReceiver.instance().requestLocation(this, success -> {
-                        continueCurrentAction();
+//                    LocationReceiver.instance().requestLocation(this, success -> {
+//                        continueCurrentAction();
+//                    });
+                    LocationReceiver.instance().requestLocation(this, new LocationReceiver.LocationReceiverListener() {
+                        @Override
+                        public void locationChanged(boolean success) {
+                            continueCurrentAction();
+                        }
                     });
                     break;
             }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

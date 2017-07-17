@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import vn.danhtran.baseproject.SingleResultListener;
 import vn.danhtran.baseproject.receiver.ErrorReceiver;
@@ -25,9 +26,21 @@ public class BaseService {
                                                      final boolean isSendError) {
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        errorModel -> handleResponse(errorModel, singleResultListener, isSendError),
-                        throwable -> handleError(throwable, singleResultListener, isSendError));
+                .subscribe(new Consumer<T>() {
+                    @Override
+                    public void accept(T t) {
+                        try {
+                            handleResponse(t, singleResultListener, isSendError);
+                        } catch (Throwable throwable) {
+                            handleError(throwable, singleResultListener, isSendError);
+                        }
+
+                    }
+                });
+//                .subscribe(
+
+//                        errorModel -> handleResponse(errorModel, singleResultListener, isSendError),
+//                        throwable -> handleError(throwable, singleResultListener, isSendError));
     }
 
     //handler response with default send error

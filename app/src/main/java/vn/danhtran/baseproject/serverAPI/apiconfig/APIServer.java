@@ -19,15 +19,20 @@ import vn.danhtran.baseproject.serverAPI.models.LoginModel;
 
 public interface APIServer {
     String header = "Content-Type: application/json";
+    String header1 = "Accept-Encoding: identity";
 
     //-----------------Call<>
     @Headers(header)
-    @POST("{api}/{sub}")
-    Call<JsonElement> postRequest(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
+    @POST("{api}")
+    Call<JsonElement> postRequest(@Path("api") String api, @Body JsonElement jsonData);
 
     @Headers(header)
-    @GET("{api}")
-    Call<JsonElement> getRequest(@Path("api") String api, @Body JsonElement jsonData);
+    @POST("{api}/{sub}")
+    Call<JsonElement> postRequestSub(@Path("api") String api,@Path("sub") String sub, @Body JsonElement jsonData);
+
+    @Headers(header)
+    @GET("{api}/{sub}")
+    Call<JsonElement> getRequest(@Path("api") String api, @Path("sub") String sub, @Body JsonElement jsonData);
 
     @Headers(header)
     @DELETE("{api}")
