@@ -28,13 +28,13 @@ public class BaseService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<T>() {
                     @Override
-                    public void accept(T t) {
-                        try {
-                            handleResponse(t, singleResultListener, isSendError);
-                        } catch (Throwable throwable) {
-                            handleError(throwable, singleResultListener, isSendError);
-                        }
-
+                    public void accept(T t) throws Exception {
+                        handleResponse(t, singleResultListener, isSendError);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(throwable, singleResultListener, isSendError);
                     }
                 });
 //                .subscribe(
