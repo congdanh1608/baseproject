@@ -1,6 +1,7 @@
 package vn.danhtran.baseproject.enums;
 
-import vn.danhtran.moviestvshows.utils.EnumUtils;
+
+import vn.danhtran.baseproject.utils.EnumUtils;
 
 /**
  * Created by SilverWolf on 09/04/2017.
