@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import vn.danhtran.baseproject.customview.DividerItemDecoration;
+import vn.danhtran.baseproject.customview.SpacesItemDecoration;
 import vn.danhtran.baseproject.utils.DimensionUtils;
 import vn.danhtran.customglide.GlideImageLoader;
 
