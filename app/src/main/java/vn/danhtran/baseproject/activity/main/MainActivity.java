@@ -56,18 +56,18 @@ public class MainActivity extends BaseAppCompatActivity implements NavigationVie
             if (hashTag != null)
                 postId = hashTag.getValue();
         }*/
-//        addMyFragment(LoginFragment.class.getSimpleName(), null, null);
-        addMyFragment(RecyclerFragment.class.getSimpleName(), null, null);
+//        addMyFragment(LoginFragment.class.getName(), null, null);
+        addMyFragment(RecyclerFragment.class.getName(), null, null);
 
        /* if (MyApplication.Instance().getTypeLogin() != MyAuthenticate.TYPE_LOGIN_ANONYMOUS &&
                 TextUtils.isEmpty(MyApplication.Instance().getMyProfile().getPhone())) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(EditProfileActivity.KEY_ALLOW_UPDATE, true);
             bundle.putBoolean(EditProfileActivity.KEY_REQUIRE, true);
-            startMyActivity(EditProfileActivity.class.getSimpleName(), bundle);
+            startMyActivity(EditProfileActivity.class.getName(), bundle);
         }*/
     }
-    
+
     @Override
     public void initData() {
 
@@ -132,20 +132,13 @@ public class MainActivity extends BaseAppCompatActivity implements NavigationVie
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            addMyFragment(LoginFragment.class.getSimpleName(), null, null);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_camera:
+                addMyFragment(LoginFragment.class.getName(), null, null);
+                break;
+            case R.id.nav_gallery:
+                break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

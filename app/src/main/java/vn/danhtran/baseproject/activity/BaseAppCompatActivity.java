@@ -73,10 +73,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
             setContentView(xml);
             binding = DataBindingUtil.setContentView(this, xml);
         }
-
+        initFragmentManager();
         createHashMapTitle();
         initUI();
-        initFragmentManager();
         initListener();
         initData();
     }
@@ -215,9 +214,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
                 return;
             }
             //add new fragment
-            if (tag.equals(LoginFragment.class.getSimpleName())) {
+            if (tag.equals(LoginFragment.class.getName())) {
                 fragMain = LoginFragment.instance();
-            } else if (tag.equals(RecyclerFragment.class.getSimpleName())) {
+            } else if (tag.equals(RecyclerFragment.class.getName())) {
                 fragMain = RecyclerFragment.instance();
             }
 
@@ -255,13 +254,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
 
     private void createHashMapTitle() {
         hashTitles = new HashMap<>();
-        hashTitles.put(LoginFragment.class.getSimpleName(), "");
+        hashTitles.put(LoginFragment.class.getName(), "");
     }
 
     public void startMyActivity(String tag, Bundle bundle) {
         Intent intent = null;
         if (!TextUtils.isEmpty(tag)) {
-            if (tag.equals(MainActivity.class.getSimpleName())) {
+            if (tag.equals(MainActivity.class.getName())) {
                 intent = MainActivity.instance(this);
             }
         }
