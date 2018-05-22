@@ -1,6 +1,5 @@
 # baseproject
-Base Project for Android Application
-This project was deprecated. Here is new one for android java: https://github.com/congdanh1608/AndroidBaseProject
+Base Project for Android Application. This project was deprecated. Please come here to view a new one for android java: https://github.com/congdanh1608/AndroidBaseProject
 
 #Features
 - Custom Glide  -> add some the most commonly used functions.
